@@ -67,7 +67,7 @@ function processDojoPoints(data, { forcePublish } = {}) {
   const changedPoints = [];
   data._items.forEach(student => {
     const name = `${student.firstName} ${student.lastName}`;
-    const points = student.currentPoints;
+    const points = +student.currentPoints;
 
     if (dojoPoints[name] != points || forcePublish) {
       changedPoints.push(name);
@@ -77,7 +77,9 @@ function processDojoPoints(data, { forcePublish } = {}) {
 
   return Promise.all(changedPoints.map(name => {
     const points = dojoPoints[name];
-    console.log(`Publishing ${points} for ${name}`);
-    return particle.publishEvent({ name: `dojoPoints/${name}`, data: points, auth: particle_token });
+    const sanitizedName = name.replace(/[^a-zA-Z]/g, '_');
+    console.log(`Publishing ${points} for ${sanitizedName}`);
+    return particle.publishEvent({ name: `dojoPoints/${sanitizedName}`, data: `${points}`, isPrivate: true, auth: particle_token });
   }));
 }
+

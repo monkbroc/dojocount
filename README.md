@@ -2,7 +2,23 @@
 
 ## Deploy
 
-The cloud app is deployed to Digital Ocean to onephotoaday.dyndns.org
+The cloud app is deployed to dokku on onephotoaday.dyndns.org
+
+Push to dokku from laptop to deploy.
+```
+git push dokku master
+```
+
+There is an issue with dokku with the newest version of git that blocks
+the pre-receive hook with the error `ref updates forbidden inside quarantine environment`.
+
+The simplest workaround is to rename `/home/dokku/dojocount/hooks/pre-receive` to `post-receive`. Then do another `git push dokku master`. If that doesn't work, try `dokku ps:rebuild dojocount` from the cloud server.
+
+## Update env vars
+```
+ssh onephotoaday.dyndns.org
+dokku config dojocount
+```
 
 ## Notes
 
@@ -13,7 +29,7 @@ curl 'https://home.classdojo.com/api/dojoSession' -H 'origin: https://www.classd
 
 Response
 ```
-set-cookie:dojo_home_login.sid=s%3ADl15KWUT1sS2MwpmNB6SGrYETRU7PrqB.KvK%2BMrhsVKAFrOhuHAzQmHo9OSqcsLVLW6jdAIkfCHo; Max-Age=31536000; Domain=.classdojo.com; Path=/; Expires=Sat, 08 Sep 2018 01:27:20 GMT; HttpOnly; Secure
-set-cookie:dojo_login.sid=s%3ADl15KWUT1sS2MwpmNB6SGrYETRU7PrqB.KvK%2BMrhsVKAFrOhuHAzQmHo9OSqcsLVLW6jdAIkfCHo; Domain=.classdojo.com; Path=/; Expires=Sat, 08 Sep 2018 01:27:20 GMT; HttpOnly; Secure
+set-cookie:dojo_home_login.sid=s%3ADl15KWUT1sS2MwpmNB6SGrYETRU7PrqB.KvK%2B000000000000000000000000000000000000000; Max-Age=31536000; Domain=.classdojo.com; Path=/; Expires=Sat, 08 Sep 2018 01:27:20 GMT; HttpOnly; Secure
+set-cookie:dojo_login.sid=s%3ADl15KWUT1sS2MwpmNB6SGrYETRU7PrqB.KvK%2B000000000000000000000000000000000000000; Domain=.classdojo.com; Path=/; Expires=Sat, 08 Sep 2018 01:27:20 GMT; HttpOnly; Secure
 ```
 

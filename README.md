@@ -1,5 +1,9 @@
 # Dojo Count
 
+## Deploy
+
+The cloud app is deployed to Digital Ocean to onephotoaday.dyndns.org
+
 ## Notes
 
 ### Login
